@@ -6,3 +6,6 @@ cache/
 
 # Error logs
 error_log
+
+# CGI
+cgi-bin/
