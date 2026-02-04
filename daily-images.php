@@ -11,6 +11,7 @@ define('CACHE_RETENTION_DAYS', 7);
 define('UNSPLASH_ENDPOINT', 'https://api.unsplash.com/photos/random');
 define('UNSPLASH_QUERY', 'nature,landscape');
 define('UNSPLASH_ORIENTATION', 'landscape');
+define('UNSPLASH_UTM_SOURCE', 'daily-images-api');
 
 $debug = false; //isset($_GET['debug']) && $_GET['debug'] === '1';
 $debugInfo = [
@@ -60,6 +61,14 @@ function dateKey(DateTimeImmutable $dt): string {
 
 function cachePath(string $date): string {
     return CACHE_DIR . "/{$date}.json";
+}
+
+function withUtm(string $url): string {
+    $separator = (strpos($url, '?') === false) ? '?' : '&';
+    return $url . $separator . http_build_query([
+        'utm_source' => UNSPLASH_UTM_SOURCE,
+        'utm_medium' => 'referral',
+    ]);
 }
 
 function readCache(string $date): ?array {
@@ -158,11 +167,21 @@ function fetchFromUnsplash(?string &$errorOut = null): ?array {
     }
 
     $rawUrl = $json['urls']['raw'];
+    $photographerName = $json['user']['name'] ?? null;
+    $photographerUrl = $json['user']['links']['html'] ?? null;
+    $photoUrl = $json['links']['html'] ?? null;
 
     return [
         'unsplashPhotoId' => $json['id'],
         'imageUrl' => $rawUrl . '&w=2600&q=80',
-        'blurUrl'  => $rawUrl . '&w=200&q=20'
+        'blurUrl'  => $rawUrl . '&w=200&q=20',
+        'credit' => [
+            'photographerName' => $photographerName ?? 'Unknown',
+            'photographerUrl' => $photographerUrl ? withUtm($photographerUrl) : null,
+            'unsplashPhotoUrl' => $photoUrl ? withUtm($photoUrl) : null,
+            'unsplashName' => 'Unsplash',
+            'unsplashUrl' => withUtm('https://unsplash.com/'),
+        ],
     ];
 }
 
@@ -230,7 +249,8 @@ foreach ($dates as $key => $dt) {
         $images[$key] = [
             'dateUtc' => $date,
             'imageUrl' => $data['imageUrl'],
-            'blurUrl' => $data['blurUrl']
+            'blurUrl' => $data['blurUrl'],
+            'credit' => $data['credit'] ?? null,
         ];
     }
 }
@@ -242,7 +262,8 @@ if (empty($images['current'])) {
         $images['current'] = [
             'dateUtc' => $fallback['dateUtc'] ?? $anchorDate,
             'imageUrl' => $fallback['imageUrl'],
-            'blurUrl' => $fallback['blurUrl']
+            'blurUrl' => $fallback['blurUrl'],
+            'credit' => $fallback['credit'] ?? null,
         ];
     }
 }
