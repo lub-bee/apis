@@ -13,7 +13,7 @@ define('UNSPLASH_QUERY', 'nature,landscape');
 define('UNSPLASH_ORIENTATION', 'landscape');
 define('UNSPLASH_UTM_SOURCE', 'daily-images-api');
 
-$debug = isset($_GET['debug']) && $_GET['debug'] === '1';
+$debug = false; //isset($_GET['debug']) && $_GET['debug'] === '1';
 $debugInfo = [
     'cacheDir' => CACHE_DIR,
     'cacheDirExists' => null,
