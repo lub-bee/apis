@@ -5,7 +5,7 @@
 // =========================
 
 define('UNSPLASH_ACCESS_KEY', 'HebsLod5ucoRSBLAMLmT4zwCsdpKbc7EnICeOAprWys');
-define('CACHE_DIR', __DIR__ . '/cache');
+define('CACHE_DIR', getenv('DAILY_IMAGES_CACHE_DIR') ?: (__DIR__ . '/cache'));
 define('CACHE_RETENTION_DAYS', 7);
 
 define('UNSPLASH_ENDPOINT', 'https://api.unsplash.com/photos/random');
@@ -18,6 +18,8 @@ $debugInfo = [
     'cacheDir' => CACHE_DIR,
     'cacheDirExists' => null,
     'cacheDirWritable' => null,
+    'cacheDirCreateOk' => null,
+    'cacheDirCreateError' => null,
     'unsplashFetchOk' => null,
     'unsplashError' => null,
 ];
@@ -218,7 +220,12 @@ function ensureDateCached(string $date, array &$debugInfo): ?array {
 // =========================
 
 if (!is_dir(CACHE_DIR)) {
-    @mkdir(CACHE_DIR, 0775, true);
+    $created = @mkdir(CACHE_DIR, 0775, true);
+    $debugInfo['cacheDirCreateOk'] = $created;
+    if (!$created) {
+        $err = error_get_last();
+        $debugInfo['cacheDirCreateError'] = $err ? ($err['message'] ?? 'mkdir_failed') : 'mkdir_failed';
+    }
 }
 
 $debugInfo['cacheDirExists'] = is_dir(CACHE_DIR);
