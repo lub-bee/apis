@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>418</title>
+
+  <style>
+    :root {
+      --bg: #e6eaee;     /* gris bleuté */
+      --fg: #5f6f7a;     /* texte */
+      --cog: #4f616d;    /* cogs */
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--fg);
+    }
+
+    .container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+
+    /* ===== GEAR SYSTEM ===== */
+
+    .gear-system {
+      position: relative;
+      width: 220px;
+      height: 140px;
+    }
+
+    .gear {
+      position: absolute;
+      fill: var(--cog);
+      transform-origin: 50% 50%;
+    }
+
+    .gear.big {
+      width: 110px;
+      height: 110px;
+      left: 0;
+      top: 15px;
+      animation: grind-main 7.5s infinite;
+    }
+
+    .gear.small {
+      width: 70px;
+      height: 70px;
+      right: 10px;
+      top: 40px;
+      animation: grind-secondary 7.5s infinite;
+    }
+
+    /* ===== ANIMATIONS ===== */
+
+    /* grosse roue: lourde, irrégulière */
+    @keyframes grind-main {
+      0%   { transform: rotate(0deg); }
+      12%  { transform: rotate(28deg); }
+      18%  { transform: rotate(24deg); }  /* petit retour */
+      35%  { transform: rotate(92deg); }
+      42%  { transform: rotate(88deg); }
+      60%  { transform: rotate(160deg); }
+      70%  { transform: rotate(155deg); }
+      85%  { transform: rotate(220deg); }
+      100% { transform: rotate(240deg); }
+    }
+
+    /* petite roue: suit, mais décroche parfois */
+    @keyframes grind-secondary {
+      0%   { transform: rotate(0deg); }
+      12%  { transform: rotate(-42deg); }
+      18%  { transform: rotate(-36deg); }
+      35%  { transform: rotate(-138deg); }
+      42%  { transform: rotate(-130deg); }
+      60%  { transform: rotate(-235deg); }
+      70%  { transform: rotate(-225deg); }
+      85%  { transform: rotate(-320deg); }
+      100% { transform: rotate(-350deg); }
+    }
+
+    /* ===== TEXT ===== */
+
+    error {
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="gear-system">
+
+      <!-- BIG GEAR -->
+      <svg class="gear big" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="
+          M57 5 L43 5 L40 15 L30 19 L22 12 L12 22 L19 30
+          L15 40 L5 43 L5 57 L15 60 L19 70 L12 78
+          L22 88 L30 81 L40 85 L43 95 L57 95
+          L60 85 L70 81 L78 88 L88 78 L81 70
+          L85 60 L95 57 L95 43 L85 40 L81 30
+          L88 22 L78 12 L70 19 L60 15 Z
+
+          M50 34
+          A16 16 0 1 0 50 66
+          A16 16 0 1 0 50 34
+        " />
+      </svg>
+
+      <!-- SMALL GEAR -->
+      <svg class="gear small" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="
+          M56 8 L44 8 L42 18 L34 22 L26 16 L16 26 L22 34
+          L18 42 L8 44 L8 56 L18 58 L22 66 L16 74
+          L26 84 L34 78 L42 82 L44 92 L56 92
+          L58 82 L66 78 L74 84 L84 74 L78 66
+          L82 58 L92 56 L92 44 L82 42 L78 34
+          L84 26 L74 16 L66 22 L58 18 Z
+
+          M50 38
+          A12 12 0 1 0 50 62
+          A12 12 0 1 0 50 38
+        " />
+      </svg>
+
+    </div>
+
+    <error>&lt;error&gt;I'm not a tea pot&lt;/error&gt;</error>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Cache directories
+cache/
+
+# Apache config
+.htaccess
+
+# Error logs
+error_log
