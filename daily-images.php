@@ -9,7 +9,7 @@ define('CACHE_DIR', getenv('DAILY_IMAGES_CACHE_DIR') ?: (__DIR__ . '/cache'));
 define('CACHE_RETENTION_DAYS', 7);
 
 define('UNSPLASH_ENDPOINT', 'https://api.unsplash.com/photos/random');
-define('UNSPLASH_QUERY', 'nature,landscape');
+define('UNSPLASH_QUERY', 'landscape,scenery,nature,mountains,forest,coast,desert,lake,river,valley');
 define('UNSPLASH_ORIENTATION', 'landscape');
 define('UNSPLASH_UTM_SOURCE', 'daily-images-api');
 
